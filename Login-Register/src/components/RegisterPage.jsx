@@ -1,6 +1,16 @@
+import { useState } from "react";
 import "../css/RegisterPage.css";
 
 export const RegisterPage = () => {
+
+    const [error, setError] = useState({
+        email: { required: false },
+        password: { required: false },
+        name: { required: false },
+        custom_error: null
+    })
+
+
     return (
         <>
             <section className="register-block">
@@ -17,7 +27,7 @@ export const RegisterPage = () => {
                                     </label>
 
                                     <input type="text" className="form-control" name="name" />
-                                    <span className="text-danger">Name is required.</span>
+                                    {error.name.required ? (<span className="text-danger">Name is required.</span>) : null}
                                 </div>
                                 <div className="form-group">
                                     <label
@@ -27,7 +37,7 @@ export const RegisterPage = () => {
                                     </label>
 
                                     <input type="text" className="form-control" name="email" />
-                                    <span className="text-danger">Email is required.</span>
+                                    {error.email.required ? (<span className="text-danger">Email is required.</span>) : null}
                                 </div>
                                 <div className="form-group">
                                     <label
@@ -39,11 +49,11 @@ export const RegisterPage = () => {
                                         className="form-control"
                                         type="password"
                                         name="password" />
-                                    <span className="text-danger">Password is required.</span>
+                                    {error.password.required ? (<span className="text-danger">Password is required.</span>) : null}
                                 </div>
                                 <div className="form-group">
                                     <span className="text-danger">
-                                        <p>Custom Error Message!</p>
+                                        {error.custom_error ? (<p>Custom Error Message!</p>) : null}
                                     </span>
                                     <div className="text-center">
                                         <div className="spinner-border text-primary " role="status">
