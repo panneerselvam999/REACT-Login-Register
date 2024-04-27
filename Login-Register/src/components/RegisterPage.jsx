@@ -2,14 +2,44 @@ import { useState } from "react";
 import "../css/RegisterPage.css";
 
 export const RegisterPage = () => {
-    const [error, setError] = useState({
+
+    const initialStateErrors = {
         email: { required: false },
         password: { required: false },
         name: { required: false },
         custom_error: null,
-    });
+    }
+
+    const [error, setError] = useState(initialStateErrors);
 
     const [loading, setLoading] = useState(false);
+    const [input, setInput] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+
+    const handleInput = (e) => {
+        setInput({ ...input, [e.target.name]: e.target.value })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        let validateErrors = initialStateErrors;
+
+        if (input.name == "") {
+            validateErrors.name.required = true
+        }
+        if (input.email == "") {
+            validateErrors.email.required = true
+        }
+        if (input.password == "") {
+            validateErrors.password.required = true
+        }
+
+        setError(validateErrors)
+    }
+
 
     return (
         <>
@@ -18,7 +48,7 @@ export const RegisterPage = () => {
                     <div className="row ">
                         <div className="col register-sec">
                             <h2 className="text-center">Register Now</h2>
-                            <form className="register-form" action="">
+                            <form onSubmit={handleSubmit} className="register-form" action="">
                                 <div className="form-group">
                                     <label
                                         htmlFor="exampleInputEmail1"
@@ -27,7 +57,7 @@ export const RegisterPage = () => {
                                         Name
                                     </label>
 
-                                    <input type="text" className="form-control" name="name" />
+                                    <input type="text" className="form-control" name="name" onChange={handleInput} />
                                     {error.name.required ? (
                                         <span className="text-danger">Name is required.</span>
                                     ) : null}
@@ -40,7 +70,7 @@ export const RegisterPage = () => {
                                         Email
                                     </label>
 
-                                    <input type="text" className="form-control" name="email" />
+                                    <input type="text" className="form-control" name="email" onChange={handleInput} />
                                     {error.email.required ? (
                                         <span className="text-danger">Email is required.</span>
                                     ) : null}
@@ -56,6 +86,7 @@ export const RegisterPage = () => {
                                         className="form-control"
                                         type="password"
                                         name="password"
+                                        onChange={handleInput}
                                     />
                                     {error.password.required ? (
                                         <span className="text-danger">Password is required.</span>
