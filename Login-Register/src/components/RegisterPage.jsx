@@ -2,44 +2,55 @@ import { useState } from "react";
 import "../css/RegisterPage.css";
 
 export const RegisterPage = () => {
-
     const initialStateErrors = {
         email: { required: false },
         password: { required: false },
         name: { required: false },
         custom_error: null,
-    }
+    };
 
     const [error, setError] = useState(initialStateErrors);
 
     const [loading, setLoading] = useState(false);
+
     const [input, setInput] = useState({
         name: "",
         email: "",
-        password: ""
-    })
+        password: "",
+    });
 
     const handleInput = (e) => {
-        setInput({ ...input, [e.target.name]: e.target.value })
-    }
+        setInput({ ...input, [e.target.name]: e.target.value });
+        // console.log("handle inputs");
+
+    };
 
     const handleSubmit = (e) => {
+        // console.log("submit");
         e.preventDefault();
         let validateErrors = initialStateErrors;
 
-        if (input.name == "") {
-            validateErrors.name.required = true
+        let hasError = false;
+        if (input.name === "") {
+            validateErrors.name.required = true;
+            // console.log("name if");
+            hasError = true;
         }
-        if (input.email == "") {
-            validateErrors.email.required = true
+        if (input.email === "") {
+            validateErrors.email.required = true;
+            hasError = true;
         }
-        if (input.password == "") {
-            validateErrors.password.required = true
+        if (input.password === "") {
+            validateErrors.password.required = true;
+            hasError = true;
         }
 
-        setError(validateErrors)
-    }
+        // console.log(validateErrors);
+        setError(validateErrors);
+        // console.log(validateErrors);
 
+        if (!hasError) setLoading(true);
+    };
 
     return (
         <>
@@ -57,7 +68,12 @@ export const RegisterPage = () => {
                                         Name
                                     </label>
 
-                                    <input type="text" className="form-control" name="name" onChange={handleInput} />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="name"
+                                        onChange={handleInput}
+                                    />
                                     {error.name.required ? (
                                         <span className="text-danger">Name is required.</span>
                                     ) : null}
@@ -70,7 +86,12 @@ export const RegisterPage = () => {
                                         Email
                                     </label>
 
-                                    <input type="text" className="form-control" name="email" onChange={handleInput} />
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="email"
+                                        onChange={handleInput}
+                                    />
                                     {error.email.required ? (
                                         <span className="text-danger">Email is required.</span>
                                     ) : null}
@@ -111,6 +132,7 @@ export const RegisterPage = () => {
                                         type="submit"
                                         className="btn btn-login float-right"
                                         value="Register"
+                                        disabled={loading}
                                     />
                                 </div>
                                 <div className="clearfix"></div>
