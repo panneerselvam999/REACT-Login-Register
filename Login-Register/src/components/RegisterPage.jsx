@@ -1,7 +1,10 @@
 import { useState } from "react";
 import "../css/RegisterPage.css";
 import { RegisterApi } from "../service/RegisterApi";
-import { storeUserData } from "../service/Storate";
+import { storeUserData } from "../service/Storage";
+import { isAuthenticated } from "../service/Auth";
+
+import { Navigate } from "react-router-dom"
 
 export const RegisterPage = () => {
     const initialStateErrors = {
@@ -60,6 +63,13 @@ export const RegisterPage = () => {
                     setLoading(false);
                 });
         }
+
+        console.log("is authendicated before");
+        if (isAuthenticated()) {
+            console.log("is authendicated inner");
+            return <Navigate to="/dashboard" />
+        }
+        console.log("is authendicated after");
     };
 
     return (
