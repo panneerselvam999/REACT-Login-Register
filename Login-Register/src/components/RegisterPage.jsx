@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../css/RegisterPage.css";
+import { RegisterApi } from "../service/RegisterApi";
 
 export const RegisterPage = () => {
     const initialStateErrors = {
@@ -21,19 +22,15 @@ export const RegisterPage = () => {
 
     const handleInput = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value });
-        // console.log("handle inputs");
-
     };
 
     const handleSubmit = (e) => {
-        // console.log("submit");
         e.preventDefault();
         let validateErrors = initialStateErrors;
 
         let hasError = false;
         if (input.name === "") {
             validateErrors.name.required = true;
-            // console.log("name if");
             hasError = true;
         }
         if (input.email === "") {
@@ -45,11 +42,22 @@ export const RegisterPage = () => {
             hasError = true;
         }
 
-        // console.log(validateErrors);
         setError(validateErrors);
-        // console.log(validateErrors);
 
-        if (!hasError) setLoading(true);
+        if (!hasError) {
+            setLoading(true);
+
+            RegisterApi(input)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((error) => {
+                    console.error(error.message);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
     };
 
     return (
