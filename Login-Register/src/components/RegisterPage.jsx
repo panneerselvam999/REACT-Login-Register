@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../css/RegisterPage.css";
 import { RegisterApi } from "../service/RegisterApi";
+import { storeUserData } from "../service/Storate";
 
 export const RegisterPage = () => {
     const initialStateErrors = {
@@ -50,6 +51,7 @@ export const RegisterPage = () => {
             RegisterApi(input)
                 .then((res) => {
                     console.log(res);
+                    storeUserData(res.data.idToken)
                 })
                 .catch((error) => {
                     console.error(error.message);
